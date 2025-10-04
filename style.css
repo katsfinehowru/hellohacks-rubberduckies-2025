@@ -1,0 +1,19 @@
+#trainer {
+    height: 80px;
+}
+
+li {
+    color: lightseagreen;
+}
+
+#output {
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+    height: 100px;
+    width: 100px;
+}
+
+#pokemon {
+    width: 100px;
+}
