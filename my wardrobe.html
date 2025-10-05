@@ -1,150 +1,169 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Wardrobe</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>My Wardrobe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/my_wardrobe_style.css" />
 </head>
+
 <body>
-        <nav id="menu">
+    <nav id="menu">
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="my wardrobe.html">My Wardrobe</a></li>
+            <li>
+                <a href="index.html">
+                    <img src="icons/search.png" alt="Home" class="nav-icon">
+                </a>
+            </li>
+            <li>
+                <a href="my wardrobe.html">
+                    <img src="icons/my_wardrobe.png" alt="My Wardrobe" class="nav-icon">
+                </a>
+            </li>
+            <h2>Mofit</h2>
+            <li>
+                <img src="icons/calender.png" alt="Calender" class="nav-icon">
+            </li>
+            <li>
+                <img id="cat" src="icons/account.png" alt="Home" class="nav-icon">
+            </li>
         </ul>
     </nav>
-    
-  <header class="topbar">
-    <h1>My Wardrobe</h1>
 
-    <!-- Filter bar -->
-    <div class="filters">
-      <div class="filter-row">
-        <span class="group-label">Type</span>
-        <div class="chip-row" data-group="type">
-          <button class="chip" data-value="Top">Tops</button>
-          <button class="chip" data-value="Bottom">Bottoms</button>
-          <button class="chip" data-value="Dress">Dress</button>
-          <button class="chip" data-value="Outerwear">Outwear</button>
-          <button class="chip" data-value="Accessory">Accessory</button>
-        </div>
-        <button id="favToggle" class="heart" title="Favorites only">♡</button>
-      </div>
+    <header class="topbar">
+        <h1>My Wardrobe</h1>
 
-      <div class="filter-row">
-        <span class="group-label">Season</span>
-        <div class="chip-row" data-group="season">
-          <button class="chip" data-value="Spring">Spring</button>
-          <button class="chip" data-value="Summer">Summer</button>
-          <button class="chip" data-value="Autumn">Autumn</button>
-          <button class="chip" data-value="Winter">Winter</button>
-        </div>
-      </div>
+        <!-- Filter bar -->
+        <div class="filters">
+            <div class="filter-row">
+                <span class="group-label">Type</span>
+                <div class="chip-row" data-group="type">
+                    <button class="chip" data-value="Top">Tops</button>
+                    <button class="chip" data-value="Bottom">Bottoms</button>
+                    <button class="chip" data-value="Dress">Dress</button>
+                    <button class="chip" data-value="Outerwear">Outwear</button>
+                    <button class="chip" data-value="Accessory">Accessory</button>
+                </div>
+                <button id="favToggle" class="heart" title="Favorites only">♡</button>
+            </div>
 
-      <div class="filter-row">
-        <span class="group-label">Style</span>
-        <div class="chip-row" data-group="style">
-          <button class="chip" data-value="Casual">Casual</button>
-          <button class="chip" data-value="Street">Street</button>
-          <button class="chip" data-value="Elegant">Elegant</button>
-          <button class="chip" data-value="Sporty">Sporty</button>
-        </div>
-      </div>
+            <div class="filter-row">
+                <span class="group-label">Season</span>
+                <div class="chip-row" data-group="season">
+                    <button class="chip" data-value="Spring">Spring</button>
+                    <button class="chip" data-value="Summer">Summer</button>
+                    <button class="chip" data-value="Autumn">Autumn</button>
+                    <button class="chip" data-value="Winter">Winter</button>
+                </div>
+            </div>
 
-      <div class="filter-row">
-        <span class="group-label">Color</span>
-        <div class="chip-row" data-group="color">
-          <button class="chip" data-value="White">White</button>
-          <button class="chip" data-value="Black">Black</button>
-          <button class="chip" data-value="Blue">Blue</button>
-          <button class="chip" data-value="Beige">Beige</button>
-          <button class="chip" data-value="Other">Other</button>
+            <div class="filter-row">
+                <span class="group-label">Style</span>
+                <div class="chip-row" data-group="style">
+                    <button class="chip" data-value="Casual">Casual</button>
+                    <button class="chip" data-value="Street">Street</button>
+                    <button class="chip" data-value="Elegant">Elegant</button>
+                    <button class="chip" data-value="Sporty">Sporty</button>
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <span class="group-label">Color</span>
+                <div class="chip-row" data-group="color">
+                    <button class="chip" data-value="White">White</button>
+                    <button class="chip" data-value="Black">Black</button>
+                    <button class="chip" data-value="Blue">Blue</button>
+                    <button class="chip" data-value="Beige">Beige</button>
+                    <button class="chip" data-value="Other">Other</button>
+                </div>
+            </div>
         </div>
-      </div>
+    </header>
+
+    <main id="main">
+        <div id="gallery" class="gallery" aria-live="polite"></div>
+    </main>
+
+    <!-- Bottom controls -->
+    <div class="bottom-bar">
+        <button class="round-btn">•</button>
+        <button class="round-btn">☆</button>
+        <button class="round-btn">•</button>
+        <button id="openUpload" class="camera-btn" title="Add item" aria-label="Add item">📷</button>
     </div>
-  </header>
 
-  <main id="main">
-    <div id="gallery" class="gallery" aria-live="polite"></div>
-  </main>
+    <!-- Upload / Edit Modal -->
+    <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card">
+            <h2 id="modalTitle">Add Item</h2>
 
-  <!-- Bottom controls -->
-  <div class="bottom-bar">
-    <button class="round-btn">•</button>
-    <button class="round-btn">☆</button>
-    <button class="round-btn">•</button>
-    <button id="openUpload" class="camera-btn" title="Add item" aria-label="Add item">📷</button>
-  </div>
+            <label class="file-label">
+                <input id="fileInput" type="file" accept="image/*" />
+                <span>Choose image</span>
+            </label>
 
-  <!-- Upload / Edit Modal -->
-  <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-card">
-      <h2 id="modalTitle">Add Item</h2>
+            <div class="preview-row">
+                <img id="imgPreview" alt="Preview" />
+            </div>
 
-      <label class="file-label">
-        <input id="fileInput" type="file" accept="image/*" />
-        <span>Choose image</span>
-      </label>
+            <div class="form-row">
+                <input id="itemName" type="text" placeholder="Item name (optional)" />
+            </div>
 
-      <div class="preview-row">
-        <img id="imgPreview" alt="Preview" />
-      </div>
+            <div class="form-row">
+                <select id="itemType">
+                    <option value="">Type</option>
+                    <option value="Top">Top</option>
+                    <option value="Bottom">Bottom</option>
+                    <option value="Dress">Dress</option>
+                    <option value="Outerwear">Outerwear</option>
+                    <option value="Accessory">Accessory</option>
+                </select>
+                <select id="itemSeason">
+                    <option value="">Season</option>
+                    <option value="Spring">Spring</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Autumn">Autumn</option>
+                    <option value="Winter">Winter</option>
+                </select>
+            </div>
 
-      <div class="form-row">
-        <input id="itemName" type="text" placeholder="Item name (optional)" />
-      </div>
+            <div class="form-row">
+                <select id="itemStyle">
+                    <option value="">Style</option>
+                    <option value="Casual">Casual</option>
+                    <option value="Street">Street</option>
+                    <option value="Elegant">Elegant</option>
+                    <option value="Sporty">Sporty</option>
+                </select>
+                <select id="itemColor">
+                    <option value="">Color</option>
+                    <option value="White">White</option>
+                    <option value="Black">Black</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Beige">Beige</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
 
-      <div class="form-row">
-        <select id="itemType">
-          <option value="">Type</option>
-          <option value="Top">Top</option>
-          <option value="Bottom">Bottom</option>
-          <option value="Dress">Dress</option>
-          <option value="Outerwear">Outerwear</option>
-          <option value="Accessory">Accessory</option>
-        </select>
-        <select id="itemSeason">
-          <option value="">Season</option>
-          <option value="Spring">Spring</option>
-          <option value="Summer">Summer</option>
-          <option value="Autumn">Autumn</option>
-          <option value="Winter">Winter</option>
-        </select>
-      </div>
+            <label class="fav-row">
+                <input id="itemFav" type="checkbox" />
+                <span>Favorite</span>
+            </label>
 
-      <div class="form-row">
-        <select id="itemStyle">
-          <option value="">Style</option>
-          <option value="Casual">Casual</option>
-          <option value="Street">Street</option>
-          <option value="Elegant">Elegant</option>
-          <option value="Sporty">Sporty</option>
-        </select>
-        <select id="itemColor">
-          <option value="">Color</option>
-          <option value="White">White</option>
-          <option value="Black">Black</option>
-          <option value="Blue">Blue</option>
-          <option value="Beige">Beige</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-
-      <label class="fav-row">
-        <input id="itemFav" type="checkbox" />
-        <span>Favorite</span>
-      </label>
-
-      <div class="modal-actions">
-        <div class="left">
-          <button id="saveItem" class="btn primary" type="button">Save</button>
-          <button id="cancelItem" class="btn" type="button">Cancel</button>
+            <div class="modal-actions">
+                <div class="left">
+                    <button id="saveItem" class="btn primary" type="button">Save</button>
+                    <button id="cancelItem" class="btn" type="button">Cancel</button>
+                </div>
+                <button id="deleteItem" class="btn danger" style="display:none" type="button">Delete</button>
+            </div>
         </div>
-        <button id="deleteItem" class="btn danger" style="display:none" type="button">Delete</button>
-      </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
