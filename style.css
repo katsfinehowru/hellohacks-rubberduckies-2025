@@ -1,107 +1,111 @@
-body {
-    text-align: center;
-}
-
-#city {
-    font-style: italic;
-}
+/* Google Fonts: combine families in one import (or use <link> in HTML) */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Pixelify+Sans:wght@400..700&display=swap');
 
 /* Base */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-:root{
-  --bg:#f7f7f8; --card:#fff; --muted:#8b8b8b; --radius:18px;
-  --shadow:0 8px 28px rgba(10,10,20,.08);
-}
-body{ font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      background: var(--bg); color:#111; }
+* { box-sizing: border-box; }
 
-/* Header */
-.topbar{ max-width: 1100px; margin: 16px auto 8px; padding: 0 16px; }
-.topbar h1{ font-family: "Georgia", serif; font-weight: 600; font-size: 34px; margin-bottom: 10px; }
-
-/* Filters */
-.filters{ display:flex; flex-direction:column; gap:10px; }
-.filter-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-.group-label{ font-weight:600; min-width:70px; }
-.chip-row{ display:flex; gap:8px; flex-wrap:wrap; }
-.chip{
-  padding:6px 12px; border-radius:999px; border:1px solid #eee; background:#fff;
-  box-shadow:0 2px 8px rgba(0,0,0,.05); cursor:pointer; font-size:14px;
-}
-.chip.active{ background:linear-gradient(90deg,#ffdcae,#fff5cc); }
-.heart{
-  margin-left:auto; border:0; background:#fff; width:36px; height:36px; border-radius:50%;
-  box-shadow:0 2px 8px rgba(0,0,0,.08); cursor:pointer; font-size:18px; line-height:36px;
-}
-.heart.active{ background:#111; color:#fff; }
-
-/* Main */
-#main{ max-width:1100px; margin: 0 auto; padding: 12px 16px 120px; }
-
-/* Gallery grid */
-.gallery{
-  display:grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap:16px; justify-items:center; align-items:start;
+body {
+  margin: 0;
+  font-family: "Pixelify Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: #111;
+  background: #fafafa;
+  text-align: center; /* if you really want global centering */
 }
 
-/* Card */
-.card{
-  position:relative; width:100%; max-width:230px; background:var(--card); border-radius:20px;
-  box-shadow: var(--shadow); padding:10px; transition:transform .15s ease, box-shadow .15s ease; cursor:pointer;
-}
-.card:hover{ transform: translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,.12); }
-.thumb{ width:100%; height:200px; object-fit:cover; border-radius:14px; display:block; }
-.meta{ padding:8px 2px 2px; text-align:center; font-size:14px; color:#333; }
-.badges{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
-.badge{ font-size:11px; padding:4px 8px; border-radius:999px; background:#f3f6fb; border:1px solid #eee; color:#334; }
 
-/* Favorite pin on card */
-.fav-pin{
-  position:absolute; left:10px; top:10px;
-  width:30px; height:30px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;
-  box-shadow:0 3px 10px rgba(0,0,0,.12); font-size:14px;
+h1, h2, h3 {
+  font-family: "Instrument Serif", Georgia, serif;
 }
 
-/* Card actions */
-.actions{ position:absolute; top:10px; right:10px; display:flex; gap:6px; }
-.small-btn{
-  border:0; background:rgba(255,255,255,.92); width:30px; height:30px; border-radius:10px;
-  box-shadow:0 4px 12px rgba(10,10,20,.08); cursor:pointer; font-size:15px;
+#city { font-style: italic; }
+
+/* Layout */
+.container { max-width: 960px; margin: 0 auto; padding: 12px; }
+
+/* Topbar + Filter */
+.topbar { max-width: 960px; margin: 16px auto; padding: 0 12px; }
+.topbar h1 { margin: 0 0 10px; font-size: 22px; }
+
+.filterbar {
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  background: #fff; padding: 8px; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,.06);
+}
+.filterbar label { display: flex; align-items: center; gap: 6px; }
+.filterbar select { padding: 6px 8px; border-radius: 8px; border: 1px solid #e5e5e5; background: #fff; }
+
+.chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 6px 10px; border-radius: 999px; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; font-size: 13px; font-family: "Pixelify Sans";
+}
+.chip.active { background: #eaf6ff; border-color: #d3ecff; }
+
+.heart {
+  margin-left: auto; width: 32px; height: 32px; border: 1px solid #e5e5e5; background: #fff; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer; font-size: 16px;
+}
+.heart.active { background: #111; color: #fff; border-color: #111; }
+
+/* Gallery */
+.gallery {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.card {
+  background: #fff; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,.06); overflow: hidden; position: relative;
+}
+.card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.card .name { padding: 8px; font-size: 13px; color: #333; text-align: center; }
+
+.card .icons { position: absolute; top: 6px; right: 6px; display: flex; gap: 4px; }
+.icon {
+  border: 0; background: rgba(255,255,255,.92); width: 28px; height: 28px; border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08); cursor: pointer; font-size: 14px;
+}
+.pin {
+  position: absolute; left: 6px; top: 6px; width: 26px; height: 26px; border-radius: 50%;
+  background: #fff; display: grid; place-items: center; box-shadow: 0 1px 5px rgba(0,0,0,.12); font-size: 12px;
 }
 
-/* Bottom bar */
-.bottom-bar{
-  position: fixed; left: 50%; transform: translateX(-50%);
-  bottom: 18px; display:flex; align-items:center; gap:14px; z-index: 60;
-}
-.round-btn{
-  width:48px; height:48px; border-radius:999px; border:0; background:#fff; box-shadow: var(--shadow); cursor:pointer;
-}
-.camera-btn{
-  width:60px; height:60px; border-radius:999px; border:0; background:#111; color:#fff; font-size:22px;
-  display:flex; align-items:center; justify-content:center; box-shadow:0 14px 36px rgba(0,0,0,.25); cursor:pointer;
+/* FAB */
+.fab {
+  position: fixed; right: 16px; bottom: 16px; width: 52px; height: 52px; border-radius: 50%;
+  border: 0; background: #111; color: #fff; font-size: 22px; cursor: pointer; box-shadow: 0 8px 22px rgba(0,0,0,.25);
 }
 
 /* Modal */
-.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(10,10,12,.45); z-index:80; padding:18px; }
-.modal.open{ display:flex; }
-.modal-card{ width:100%; max-width:480px; background:var(--card); border-radius:20px; padding:16px; box-shadow:0 22px 60px rgba(10,10,20,.18); }
-.modal-card h2{ margin:0 0 10px; font-size:18px; }
-.file-label{ display:inline-flex; gap:10px; align-items:center; padding:10px; border-radius:12px; border:1px dashed #e6e6e6; cursor:pointer; width:100%; }
-.file-label input{ display:none; }
-.preview-row{ display:flex; justify-content:center; margin:10px 0; }
-.preview-row img{ width:180px; height:160px; object-fit:cover; border-radius:12px; background:#f6f6f8; }
-.form-row{ display:flex; gap:10px; margin:8px 0; }
-.form-row input,.form-row select{ flex:1; padding:10px; border-radius:10px; border:1px solid #eee; }
-.fav-row{ display:flex; align-items:center; gap:8px; margin:4px 0 2px; }
-.modal-actions{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:10px; }
-.btn{ padding:10px 12px; border-radius:10px; border:0; cursor:pointer; }
-.btn.primary{ background:#111; color:#fff; }
-.btn.danger{ background:#ff5858; color:#fff; }
-.btn:hover{ opacity:.95; }
-
-/* Responsive */
-@media (max-width:600px){
-  .gallery{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-  .thumb{ height:180px; }
+.modal {
+  position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.45); padding: 12px;
 }
+.modal.open { display: flex; }
+.modal-card {
+  width: 100%; max-width: 420px; background: #fff; border-radius: 12px; padding: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+.modal-card h2 { margin: 0 0 8px; font-size: 18px; }
+
+.file {
+  display: inline-flex; gap: 8px; align-items: center; padding: 8px; border: 1px dashed #ddd;
+  border-radius: 8px; width: 100%; margin-bottom: 10px;
+}
+.file input { display: none; }
+
+.preview {
+  width: 100%; height: 220px; object-fit: cover; background: #f2f2f2;
+  border-radius: 8px; display: block; margin-bottom: 8px;
+}
+
+.row { display: flex; gap: 8px; }
+.row select,
+.row input[type="text"] {
+  flex: 1; padding: 8px; border: 1px solid #e5e5e5; border-radius: 8px; margin: 6px 0;
+}
+
+.fav { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+
+.actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+.btn { padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; }
+.btn.primary { background: #111; color: #fff; border-color: #111; }
+.btn.danger  { background: #ff5858; color: #fff; border-color: #ff5858; }
+
+
