@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>My Wardrobe</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/my_wardrobe_style.css" />
 </head>
 
@@ -52,7 +52,6 @@
     </header>
 
     <main class="container">
-        <!-- Gallery for wardrobe items -->
         <div id="gallery" class="gallery" aria-live="polite"></div>
     </main>
 
@@ -61,9 +60,64 @@
 
     <!-- Modal -->
     <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <!-- Container for multiple modal cards, max 2 per row -->
-        <div class="modal-cards-container" id="modalCardsContainer">
-            <!-- JS will append modal cards here -->
+        <div class="modal-card">
+            <h2 id="modalTitle">Add Item</h2>
+
+            <label class="file">
+                <input id="fileInput" type="file" accept="image/*" />
+                <span>Choose image</span>
+            </label>
+
+            <img id="imgPreview" alt="Preview" class="preview" />
+
+            <input id="itemName" type="text" placeholder="enter a name here" />
+
+            <div class="row">
+                <select id="itemType">
+                    <option value="">Type</option>
+                    <option value="top">Top</option>
+                    <option value="bottom">Bottom</option>
+                    <option value="dress">Dress</option>
+                    <option value="outerwear">Outerwear</option>
+                    <option value="accessory">Accessory</option>
+                </select>
+                <select id="itemSeason">
+                    <option value="">Season</option>
+                    <option value="spring">Spring</option>
+                    <option value="summer">Summer</option>
+                    <option value="fall">Autumn</option>
+                    <option value="winter">Winter</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <select id="itemStyle">
+                    <option value="">Style</option>
+                    <option value="casual">Casual</option>
+                    <option value="street">Street</option>
+                    <option value="elegant">Elegant</option>
+                    <option value="sporty">Sporty</option>
+                </select>
+                <select id="itemColor">
+                    <option value="">Color</option>
+                    <option value="white">White</option>
+                    <option value="black">Black</option>
+                    <option value="blue">Blue</option>
+                    <option value="beige">Beige</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <label class="fav">
+                <input id="itemFav" type="checkbox" />
+                <span>Favorite</span>
+            </label>
+
+            <div class="actions">
+                <button id="saveItem" class="btn primary" type="button">Save</button>
+                <button id="cancelItem" class="btn" type="button">Cancel</button>
+                <button id="deleteItem" class="btn danger" type="button" style="display:none">Delete</button>
+            </div>
         </div>
     </div>
 
