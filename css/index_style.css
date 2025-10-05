@@ -6,11 +6,11 @@
     display: inline-block;
     width: 60px;
     height: 60px;
-    line-height: 60px; /* centers text vertically */
-    text-align: center; /* centers text horizontally */
-    border: 3px solid lightgray; /* circle border color and thickness */
-    border-radius: 50%; /* makes it a circle */
+    line-height: 60px;
+    text-align: center; 
+    border: 3px solid lightgray; 
+    border-radius: 50%; 
     font-weight: bold;
     font-size: 1.2rem;
-    background-color: #f5f5f5; /* optional: circle background */
+    background-color: #f5f5f5;
 }

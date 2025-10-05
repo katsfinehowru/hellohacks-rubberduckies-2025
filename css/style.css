@@ -1,3 +1,6 @@
+/* Google Fonts: combine families in one import (or use <link> in HTML) */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Pixelify+Sans:wght@400..700&display=swap');
+
 body {
     text-align: center;
     font-family: 'Instrument Serif', serif;
@@ -43,3 +46,13 @@ body {
 }
 
 /* HEADING CSS */
+
+#backButton {
+    padding: 10px 20px;
+    font-family: "Pixelify Sans";
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #e5e5e5;
+    border-radius: 999px;
+    background-color: lavenderblush
+}
