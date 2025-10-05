@@ -1,7 +1,7 @@
-// Local storage key
-const STORAGE_KEY = 'wardrobe_items_v3';
+// Storage key
+const STORAGE_KEY = 'wardrobe_simple_v1';
 
-// Elements
+// DOM
 const gallery = document.getElementById('gallery');
 const openUpload = document.getElementById('openUpload');
 const modal = document.getElementById('modal');
@@ -17,29 +17,49 @@ const itemFav = document.getElementById('itemFav');
 const saveItem = document.getElementById('saveItem');
 const cancelItem = document.getElementById('cancelItem');
 const deleteItemBtn = document.getElementById('deleteItem');
+
+const categorySelect = document.getElementById('categorySelect');
+const chipRow = document.getElementById('chipRow');
 const favToggle = document.getElementById('favToggle');
 
-// Filter state
-const filters = { type: '', season: '', style: '', color: '', favoriteOnly: false };
-
-// Storage
+// Data
 let items = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 let editingId = null;
 
-/* ---------- helpers ---------- */
-function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
-function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
-function readFileAsDataURL(file){
-  return new Promise((resolve,reject)=>{
-    const r=new FileReader();
-    r.onload=e=>resolve(e.target.result);
-    r.onerror=reject;
-    r.readAsDataURL(file);
+// Filter state
+const filters = { type:'', season:'', style:'', color:'', favoriteOnly:false };
+let activeGroup = 'type';
+
+// Options for chips
+const OPTIONS = {
+  type:   ['top','bottom','dress','outerwear','accessory'],
+  season: ['spring','summer','fall','winter'],
+  style:  ['casual','street','elegant','sporty'],
+  color:  ['white','black','blue','beige','other']
+};
+
+const cap = s => s ? s[0].toUpperCase()+s.slice(1) : s;
+
+/* ---------- Chip row ---------- */
+function renderChipRow(){
+  chipRow.innerHTML = '';
+  OPTIONS[activeGroup].forEach(v=>{
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.dataset.value = v;
+    b.textContent = cap(v);
+    if(filters[activeGroup] === v) b.classList.add('active');
+    b.addEventListener('click', ()=>{
+      if(filters[activeGroup] === v){ filters[activeGroup] = ''; b.classList.remove('active'); }
+      else { filters[activeGroup] = v; chipRow.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); b.classList.add('active'); }
+      render();
+    });
+    chipRow.appendChild(b);
   });
 }
 
-/* ---------- modal open/close ---------- */
-function openModalAdd(){
+/* ---------- Modal ---------- */
+function openAdd(){
   editingId = null;
   modalTitle.textContent = 'Add Item';
   fileInput.value = '';
@@ -54,17 +74,17 @@ function openModalAdd(){
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
 }
-function openModalEdit(item){
-  editingId = item.id;
+function openEdit(it){
+  editingId = it.id;
   modalTitle.textContent = 'Edit Item';
-  imgPreview.src = item.dataUrl || '';
+  imgPreview.src = it.dataUrl || '';
   fileInput.value = '';
-  itemName.value = item.name || '';
-  itemType.value = item.type || '';
-  itemSeason.value = item.season || '';
-  itemStyle.value = item.style || '';
-  itemColor.value = item.color || '';
-  itemFav.checked = !!item.favorite;
+  itemName.value = it.name || '';
+  itemType.value = it.type || '';
+  itemSeason.value = it.season || '';
+  itemStyle.value = it.style || '';
+  itemColor.value = it.color || '';
+  itemFav.checked = !!it.favorite;
   deleteItemBtn.style.display = 'inline-block';
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
@@ -75,23 +95,20 @@ function closeModal(){
   editingId = null;
 }
 
-/* ---------- events ---------- */
-// Open/close modal
-openUpload.addEventListener('click', openModalAdd);
+/* ---------- Events ---------- */
+openUpload.addEventListener('click', openAdd);
 cancelItem.addEventListener('click', closeModal);
-modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
-document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
-// Preview
 fileInput.addEventListener('change', ()=>{
   const f=fileInput.files[0];
   if(!f) return;
   const r=new FileReader();
-  r.onload=e=>{ imgPreview.src = e.target.result; };
+  r.onload = e => imgPreview.src = e.target.result;
   r.readAsDataURL(f);
 });
 
-// Save (add/edit)
 saveItem.addEventListener('click', async ()=>{
   try{
     let dataUrl = imgPreview.src || '';
@@ -116,139 +133,103 @@ saveItem.addEventListener('click', async ()=>{
     }else{
       items.unshift({ id: uid(), ...payload, created: Date.now() });
     }
-
-    save();
-    render();
-    closeModal();
-  }catch(err){
-    console.error(err);
-    alert('Could not save item.');
-  }
+    save(); render(); closeModal();
+  }catch(e){ console.error(e); alert('Could not save.'); }
 });
 
-// Delete
 deleteItemBtn.addEventListener('click', ()=>{
   if(!editingId) return;
   if(!confirm('Delete this item?')) return;
   items = items.filter(i=>i.id!==editingId);
-  save();
-  render();
-  closeModal();
+  save(); render(); closeModal();
 });
 
-/* ---------- filter UI wiring ---------- */
-// Chip click: single-select per group, toggle off if clicking the active one
-document.querySelectorAll('.chip-row').forEach(row=>{
-  row.addEventListener('click', (e)=>{
-    const btn = e.target.closest('.chip');
-    if(!btn) return;
-    const group = row.dataset.group;           // 'type' | 'season' | 'style' | 'color'
-    const value = btn.dataset.value;
-
-    // toggle logic
-    if(btn.classList.contains('active')){
-      btn.classList.remove('active');
-      filters[group] = '';
-    }else{
-      // clear others in this group
-      row.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-      btn.classList.add('active');
-      filters[group] = value;
-    }
-    render();
-  });
+// Category select -> update chip row
+categorySelect.addEventListener('change', ()=>{
+  activeGroup = categorySelect.value;
+  renderChipRow();
 });
 
-// Favorites-only toggle
+// Favorite toggle
 favToggle.addEventListener('click', ()=>{
-  favToggle.classList.toggle('active');
-  filters.favoriteOnly = favToggle.classList.contains('active');
-  favToggle.textContent = filters.favoriteOnly ? '♥' : '♡';
+  const on = favToggle.classList.toggle('active');
+  favToggle.textContent = on ? '♥' : '♡';
+  favToggle.setAttribute('aria-pressed', String(on));
+  filters.favoriteOnly = on;
   render();
 });
 
-/* ---------- render ---------- */
-function matchesFilters(item){
-  if(filters.type && item.type !== filters.type) return false;
-  if(filters.season && item.season !== filters.season) return false;
-  if(filters.style && item.style !== filters.style) return false;
-  if(filters.color && item.color !== filters.color) return false;
-  if(filters.favoriteOnly && !item.favorite) return false;
-  return true;
+/* ---------- Helpers ---------- */
+function readFileAsDataURL(file){
+  return new Promise((res, rej)=>{
+    const r=new FileReader();
+    r.onload = e => res(e.target.result);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
 }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
 
-function badge(text){
-  const b=document.createElement('span');
-  b.className='badge';
-  b.textContent=text;
-  return b;
+/* ---------- Filtering + Render ---------- */
+function matches(it){
+  if(filters.type && it.type !== filters.type) return false;
+  if(filters.season && it.season !== filters.season) return false;
+  if(filters.style && it.style !== filters.style) return false;
+  if(filters.color && it.color !== filters.color) return false;
+  if(filters.favoriteOnly && !it.favorite) return false;
+  return true;
 }
 
 function render(){
   gallery.innerHTML = '';
-  const filtered = items.filter(matchesFilters);
+  const list = items.filter(matches);
 
-  if(filtered.length===0){
-    const empty = document.createElement('div');
-    empty.style.color='#666'; empty.style.padding='14px';
-    empty.textContent = items.length ? 'No items match your filters.' : 'No items yet — tap the camera to add one.';
-    gallery.appendChild(empty);
+  if(list.length === 0){
+    const msg = document.createElement('div');
+    msg.style.color = '#666'; msg.style.padding = '8px';
+    msg.textContent = items.length ? 'No items match your filters.' : 'No items yet — press + to add.';
+    gallery.appendChild(msg);
     return;
   }
 
-  filtered.forEach(item=>{
-    const card = document.createElement('div');
-    card.className = 'card';
+  list.forEach(it=>{
+    const card = document.createElement('div'); card.className = 'card';
 
-    // favorite pin
-    if(item.favorite){
+    if(it.favorite){
       const pin = document.createElement('div');
-      pin.className = 'fav-pin';
-      pin.textContent = '♥';
+      pin.className = 'pin'; pin.textContent = '♥';
       card.appendChild(pin);
     }
 
     const img = document.createElement('img');
-    img.className = 'thumb';
-    img.src = item.dataUrl;
-    img.alt = item.name || 'Wardrobe item';
+    img.src = it.dataUrl; img.alt = it.name || 'Wardrobe item';
     card.appendChild(img);
 
-    const actions = document.createElement('div');
-    actions.className = 'actions';
-    const editBtn = document.createElement('button');
-    editBtn.className = 'small-btn'; editBtn.title='Edit'; editBtn.textContent='✎';
-    const delBtn = document.createElement('button');
-    delBtn.className = 'small-btn'; delBtn.title='Delete'; delBtn.textContent='🗑';
-    actions.appendChild(editBtn); actions.appendChild(delBtn);
-    card.appendChild(actions);
+    const name = document.createElement('div');
+    name.className = 'name';
+    name.textContent = it.name || [it.type, it.style, it.color].filter(Boolean).map(cap).join(' • ') || 'Item';
+    card.appendChild(name);
 
-    const meta = document.createElement('div');
-    meta.className = 'meta';
-    meta.textContent = item.name || item.type || 'Item';
-    const badges = document.createElement('div');
-    badges.className = 'badges';
-    if(item.type) badges.appendChild(badge(item.type));
-    if(item.season) badges.appendChild(badge(item.season));
-    if(item.style) badges.appendChild(badge(item.style));
-    if(item.color) badges.appendChild(badge(item.color));
-    meta.appendChild(badges);
-    card.appendChild(meta);
+    const icons = document.createElement('div'); icons.className = 'icons';
+    const edit = document.createElement('button'); edit.className = 'icon'; edit.title = 'Edit'; edit.textContent = '✎';
+    const del = document.createElement('button'); del.className = 'icon'; del.title = 'Delete'; del.textContent = '🗑';
+    icons.appendChild(edit); icons.appendChild(del); card.appendChild(icons);
 
-    // interactions
-    editBtn.addEventListener('click', (e)=>{ e.stopPropagation(); openModalEdit(item); });
-    delBtn.addEventListener('click', (e)=>{
+    edit.addEventListener('click', (e)=>{ e.stopPropagation(); openEdit(it); });
+    del.addEventListener('click', (e)=>{
       e.stopPropagation();
       if(!confirm('Delete this item?')) return;
-      items = items.filter(i=>i.id!==item.id); save(); render();
+      items = items.filter(x=>x.id!==it.id); save(); render();
     });
-    card.addEventListener('click', ()=>openModalEdit(item));
 
+    card.addEventListener('click', ()=>openEdit(it));
     gallery.appendChild(card);
   });
 }
 
-/* ---------- init ---------- */
+/* ---------- Init ---------- */
+renderChipRow();
 render();
 
 

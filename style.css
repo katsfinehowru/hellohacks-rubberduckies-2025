@@ -63,3 +63,12 @@ body { background: #f7f7f8; color: #111; }
   .gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
   .thumb { height: 180px; }
 }
+
+.fav { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+
+.actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+.btn { padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; }
+.btn.primary { background: #111; color: #fff; border-color: #111; }
+.btn.danger  { background: #ff5858; color: #fff; border-color: #ff5858; }
+
+
