@@ -2,7 +2,11 @@ body {
     text-align: center;
 }
 
-#trainer {
+#city {
+    font-style: italic;
+}
+
+/* #trainer {
     height: 80px;
 }
 
@@ -20,4 +24,4 @@ li {
 
 #pokemon {
     width: 100px;
-}
+} */
