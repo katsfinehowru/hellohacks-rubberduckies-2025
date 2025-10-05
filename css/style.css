@@ -1,0 +1,45 @@
+body {
+    text-align: center;
+    font-family: 'Instrument Serif', serif;
+    
+    background-image: url("../images/star.png"), url("../images/star.png");
+    background-repeat: no-repeat, no-repeat;
+    background-size: auto, auto; /* or set a fixed size like 200px auto */
+    background-position: 33% 33%, 64% 66%; /* 1/3 from left, 1/3 from top */
+    background-attachment: fixed;
+}
+
+/* HEADING CSS */
+
+/* Make ul horizontal */
+#menu ul {
+    list-style: none;
+    display: flex;
+    /* horizontal layout */
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    /* center horizontally */
+    align-items: center;
+    gap: 20px;
+    /* space between menu items */
+}
+
+#cat {
+    width: 30px;
+    /* adjust icon size */
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+/* Style images */
+.nav-icon {
+    width: 25px;
+    /* adjust icon size */
+    height: 25px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+/* HEADING CSS */

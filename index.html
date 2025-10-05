@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Landing Page</title>
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="css/index_style.css">
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <nav id="menu">
         <ul>
@@ -31,7 +33,7 @@
     </nav>
 
     <h1>Good morning, User!</h1>
-    
+
     <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
         <div>
             <div>Today's weather in</div>
@@ -41,36 +43,36 @@
     </div>
 
     <script>
-    const API_KEY = "AIzaSyDb0KKbPhTf5aetgaB36e3HMF31Qmbu7hg"; 
-    const LAT = 49.246292; // Vancouver Latitude
-    const LON = -123.116226; // Vancouver Longitude
+        const API_KEY = "AIzaSyDb0KKbPhTf5aetgaB36e3HMF31Qmbu7hg";
+        const LAT = 49.246292; // Vancouver Latitude
+        const LON = -123.116226; // Vancouver Longitude
 
-    fetch(`https://weather.googleapis.com/v1/currentConditions:lookup?key=${API_KEY}&location.latitude=${LAT}&location.longitude=${LON}`)
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
-        
-        if (data.error) {
-            throw new Error(data.error.message);
-        }
-        
-        // Temperature in Celsius from the first result
-        const temperature = data?.feelsLikeTemperature?.degrees ?? "-";
+        fetch(`https://weather.googleapis.com/v1/currentConditions:lookup?key=${API_KEY}&location.latitude=${LAT}&location.longitude=${LON}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
 
-        const cityName = "Vancouver, British Columbia";
+                if (data.error) {
+                    throw new Error(data.error.message);
+                }
 
-        // Update HTML
-        document.getElementById("city").textContent = cityName;
-        document.getElementById("temp").textContent = temperature;
-    })
-    .catch(err => {
-        console.error("Error fetching weather:", err);
-        document.getElementById("city").textContent = "Error";
-        document.getElementById("temp").textContent = "-";
-    });
+                // Temperature in Celsius from the first result
+                const temperature = data?.feelsLikeTemperature?.degrees ?? "-";
+
+                const cityName = "Vancouver, British Columbia";
+
+                // Update HTML
+                document.getElementById("city").textContent = cityName;
+                document.getElementById("temp").textContent = temperature;
+            })
+            .catch(err => {
+                console.error("Error fetching weather:", err);
+                document.getElementById("city").textContent = "Error";
+                document.getElementById("temp").textContent = "-";
+            });
     </script>
 
-    <h2>Special Occasion?</h2>
+    <h2>Create your dream look.</h2>
     <textarea id="promptInput" rows="4" cols="50" placeholder="e.g. office event, date night, brunch"></textarea><br>
     <p>Get your perfect outfit from your personal AI stylist.</p>
     <button id="submitBtn">Submit</button>
@@ -87,7 +89,7 @@
         const systemPrompt = "Reply by listing one top and one bottom, in the format [top colour] [top type] [bottom colour] [bottom type] with the brackets in place, colours should only be basic colour names, but type can be more in detail. Colour and type should be in different brackets.\n";
 
         submitBtn.addEventListener("click", async () => {
-            const userPrompt = promptInput.value.trim(); 
+            const userPrompt = promptInput.value.trim();
             if (!userPrompt) {
                 responseOutput.textContent = "Please enter a prompt.";
                 return;
@@ -128,12 +130,82 @@
                 // Based on docs, data.contents[0].parts[0].text is common
                 let outputText = "";
 
-                responseOutput.textContent = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                responseOutput.textContent = text;
+
+                const outfit = extractOutfitParts(text);
+                if (outfit) {
+                    showOutfitImages(outfit);
+                } else {
+                    console.warn("Could not parse outfit data:", text);
+                }
             } catch (err) {
                 console.error(err);
                 responseOutput.textContent = "Error: " + err.message;
             }
         });
+
+        /* NEW IMAGE STUFF */
+
+        function extractOutfitParts(text) {
+            console.log("Raw AI text:", text);
+
+            const matches = [...text.matchAll(/\[([^\]]+)\]/g)].map(m => m[1].trim());
+            console.log("Extracted matches:", matches);
+
+            if (matches.length >= 4) {
+                const outfit = {
+                    topColor: matches[0].toLowerCase(),
+                    topType: matches[1],
+                    bottomColor: matches[2].toLowerCase(),
+                    bottomType: matches[3]
+                };
+                console.log("Parsed outfit:", outfit);
+                return outfit;
+            } else {
+                console.log("Could not extract 4 parts from AI response.");
+                return null;
+            }
+        }
+
+        function showOutfitImages(outfit) {
+            console.log("Showing outfit images for:", outfit);
+
+
+            const outfitContainer = document.getElementById("outfitImages") || (() => {
+                const div = document.createElement("div");
+                div.id = "outfitImages";
+                div.style.display = "flex";
+                div.style.justifyContent = "center";
+                div.style.gap = "20px";
+                div.style.marginTop = "20px";
+                document.body.appendChild(div);
+                return div;
+            })();
+
+            outfitContainer.innerHTML = ""; // clear previous
+
+            const topImg = document.createElement("img");
+            const bottomImg = document.createElement("img");
+
+            topImg.src = `images/tops/${outfit.topColor}_top.png`;
+            bottomImg.src = `images/bottoms/${outfit.bottomColor}_bottom.png`;
+
+            console.log("Top image path:", topImg.src);
+            console.log("Bottom image path:", bottomImg.src);
+
+            topImg.alt = `${outfit.topColor} ${outfit.topType}`;
+            bottomImg.alt = `${outfit.bottomColor} ${outfit.bottomType}`;
+
+            topImg.style.width = "150px";
+            bottomImg.style.width = "150px";
+            topImg.style.borderRadius = "10px";
+            bottomImg.style.borderRadius = "10px";
+
+            outfitContainer.appendChild(topImg);
+            outfitContainer.appendChild(bottomImg);
+        }
     </script>
 </body>
+
 </html>
