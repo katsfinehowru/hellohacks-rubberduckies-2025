@@ -6,9 +6,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <nav id="menu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="my wardrobe.html">My Wardrobe</a></li>
+        </ul>
+    </nav>
+
     <h1>Good morning, User!</h1>
     
-    <div style="display: flex; align-items: center; gap: 10px;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
         <div>
             <div>Today's weather in</div>
             <div><span id="city"></span></div>
@@ -18,8 +25,8 @@
 
     <script>
     const API_KEY = "AIzaSyDb0KKbPhTf5aetgaB36e3HMF31Qmbu7hg"; 
-    const LAT = 49.246292; // Vancouver latitude
-    const LON = -123.116226; // Vancouver longitude
+    const LAT = 49.246292; // Vancouver Latitude
+    const LON = -123.116226; // Vancouver Longitude
 
     fetch(`https://weather.googleapis.com/v1/currentConditions:lookup?key=${API_KEY}&location.latitude=${LAT}&location.longitude=${LON}`)
     .then(res => res.json())
